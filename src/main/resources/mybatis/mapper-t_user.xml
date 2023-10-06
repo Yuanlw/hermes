@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.star.hermes.ext.UserExtDao">
+
+    <resultMap id="BaseResultMap" type="com.star.hermes.entity.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="mail" property="mail" jdbcType="VARCHAR"/>
+        <result column="business_type" property="businessType" jdbcType="INTEGER"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , name, user_password, mail, business_type, count, create_time, update_time
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            1 = 1
+            <if test="search.id != null">
+                and id = #{search.id,jdbcType=BIGINT}
+            </if>
+            <if test="search.name != null and search.name != ''">
+                and name = #{search.name,jdbcType=VARCHAR}
+            </if>
+            <if test="search.userPassword != null and search.userPassword != ''">
+                and user_password = #{search.userPassword,jdbcType=VARCHAR}
+            </if>
+            <if test="search.mail != null and search.mail != ''">
+                and mail = #{search.mail,jdbcType=VARCHAR}
+            </if>
+            <if test="search.businessType != null">
+                and business_type = #{search.businessType,jdbcType=INTEGER}
+            </if>
+            <if test="search.count != null">
+                and count = #{search.count,jdbcType=INTEGER}
+            </if>
+            <if test="search.createTime != null">
+                and create_time = #{search.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="search.updateTime != null">
+                and update_time = #{search.updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </sql>
+    <select id="queryForCount" resultType="java.lang.Integer">
+        select count(*)
+        from t_user
+        <include refid="Base_Where_Clause"/>
+    </select>
+    <select id="queryForList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+        <include refid="Base_Where_Clause"/>
+        ORDER by id DESC
+        <if test="page != null">
+            limit #{page.skipIndex},#{page.perPage}
+        </if>
+    </select>
+</mapper>
