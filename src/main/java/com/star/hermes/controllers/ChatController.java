@@ -1,6 +1,8 @@
 package com.star.hermes.controllers;
 
 import com.star.hermes.service.ChatService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,8 +16,9 @@ import javax.annotation.Resource;
  * @since 2023-10-8 16:54:26
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/starAI")
 public class ChatController extends BaseController {
+    Logger logger = LoggerFactory.getLogger(ChatController.class);
 
     @Resource
     private ChatService chatService;
