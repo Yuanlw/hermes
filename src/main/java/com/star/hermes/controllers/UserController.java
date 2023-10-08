@@ -58,6 +58,11 @@ public class UserController extends BaseController {
         if (!MailService.checkMail(mail)) {
             return TcRespDto.fail("邮箱格式不正确");
         }
+        //邮箱是否已注册
+        User checkMail = userService.findByEmail(mail);
+        if (checkMail == null || checkMail.getId() <= 0) {
+            return TcRespDto.fail("邮箱已注册");
+        }
 
         // 生成随机密码
         String password = PwdUtil.generateRandomPassword(8);
@@ -65,11 +70,12 @@ public class UserController extends BaseController {
         try {
             mailService.sendPWD(mail, password);
         } catch (Exception e) {
-
+            logger.error(e.getMessage());
         }
+        //加密
+        String encryptPwd = PwdUtil.encrypt(password);
 
         // 保存到数据库
-        String encryptPwd = PwdUtil.encrypt(password);
         UserDto userDto = new UserDto(BusinessTypeEnum.FREE.getCode(), COUNT, new Date(), mail,
                                       MailService.getEmailPrefix(mail), encryptPwd);
         User user = new User();
@@ -135,12 +141,13 @@ public class UserController extends BaseController {
         String encryptPwd = PwdUtil.encrypt(password);
         UserDto userDto = new UserDto(byEmail.getBusinessType(), byEmail.getCount(), byEmail.getCreateTime(), mail,
                                       byEmail.getName(), encryptPwd);
+        userDto.setId(byEmail.getId());//主键
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
 
         userService.update(user);
 
-        return TcRespDto.success("验证码已发送到邮件中，请查收。");
+        return TcRespDto.success("登录码已发送到邮件中，请查收！");
 
     }
 

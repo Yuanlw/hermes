@@ -29,7 +29,7 @@ public class User {
     private Integer businessType;
 
     /**
-     * 对话类型
+     * 对话次数
      */
     private Integer count;
 

@@ -27,12 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmailAndPassword(String mail, String password) {
-        return null;
+        return userExtDao.findByEmailAndPassword(mail, password);
     }
 
     @Override
     public User findByEmail(String mail) {
-        return null;
+        return userExtDao.findByEmail(mail);
     }
 
     @Override

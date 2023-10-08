@@ -1,6 +1,9 @@
 package com.star.hermes.ext;
 
 import com.star.hermes.dao.UserMapper;
+import com.star.hermes.entity.User;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.common.BaseMapper;
 
 /**
@@ -10,7 +13,26 @@ import tk.mybatis.mapper.common.BaseMapper;
  *
  * @since 2023-8-31 18:05:28
  */
-//@Mapper
+@Mapper
 public interface UserExtDao extends UserMapper, BaseMapper {
+
+    @Select({"select", "id, name, mail, business_type, count", "from t_user", "where mail = #{mail,jdbcType=VARCHAR} "})
+    @Results({@Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, id = true), @Result(column = "name"
+              , property = "name", jdbcType = JdbcType.BIGINT), @Result(column = "mail", property = "mail", jdbcType
+              = JdbcType.BIGINT), @Result(column = "business_type", property = "businessType", jdbcType =
+              JdbcType.INTEGER), @Result(column = "count", property = "count", jdbcType = JdbcType.INTEGER)
+
+    })
+    User findByEmail(@Param("mail") String mail);
+
+    @Select({"select", "id, name, mail, business_type, count", "from t_user", "where mail = #{mail,jdbcType=VARCHAR} " +
+              "and user_password = #{userPassword,jdbcType=VARCHAR} "})
+    @Results({@Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, id = true), @Result(column = "name"
+              , property = "name", jdbcType = JdbcType.BIGINT), @Result(column = "mail", property = "mail", jdbcType
+              = JdbcType.BIGINT), @Result(column = "business_type", property = "businessType", jdbcType =
+              JdbcType.INTEGER), @Result(column = "count", property = "count", jdbcType = JdbcType.INTEGER)
+
+    })
+    User findByEmailAndPassword(@Param("mail") String mail, @Param("userPassword") String userPassword);
 
 }
