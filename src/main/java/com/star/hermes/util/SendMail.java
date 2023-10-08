@@ -40,9 +40,9 @@ public class SendMail {
 
         message.setSentDate(new Date());
 
-        message.setSubject("测试邮箱");
+        message.setSubject("欢迎加入StarAI!");
 
-        message.setText("嘿嘿嘿，这是一个邮件测试");
+        message.setText("       亲爱的用户,\n" + "\n" + "       欢迎注册StarAI账号。您的账号密码是: \"\"\" + password + \"\"\"\n" + "\n" + "       请妥善保管此密码并不要与他人共享。\n" + "\n" + "       欢迎加入StarAI大家庭!\n" + "       最佳问候,\n" + "       StarAI团队");
 
         Transport.send(message);
 
