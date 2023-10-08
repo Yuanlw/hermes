@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import java.util.Date;
 
 /**
@@ -50,7 +51,7 @@ public class UserController extends BaseController {
      */
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public TcRespDto register(String mail) {
+    public TcRespDto register(String mail) throws MessagingException {
         logger.info("register mail={}", mail);
 
         // 校验邮箱格式
@@ -61,7 +62,11 @@ public class UserController extends BaseController {
         // 生成随机密码
         String password = PwdUtil.generateRandomPassword(8);
         // 通过邮件服务发送验证码
-        mailService.sendMail(mail, "StarAI注册验证码", "您的密码是:" + password);
+        try {
+            mailService.sendPWD(mail, password);
+        } catch (Exception e) {
+
+        }
 
         // 保存到数据库
         String encryptPwd = PwdUtil.encrypt(password);
@@ -120,7 +125,11 @@ public class UserController extends BaseController {
         // 生成随机密码
         String password = PwdUtil.generateRandomPassword(8);
         // 通过邮件服务发送验证码
-        mailService.sendMail(mail, "StarAI找回密码", "您的密码是:" + password);
+        try {
+            mailService.sendPWD(mail, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // 保存到数据库
         String encryptPwd = PwdUtil.encrypt(password);
