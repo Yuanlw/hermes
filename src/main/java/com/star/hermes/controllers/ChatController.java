@@ -1,10 +1,15 @@
 package com.star.hermes.controllers;
 
+import com.star.hermes.common.RespCode;
+import com.star.hermes.common.TcRespDto;
 import com.star.hermes.service.ChatService;
+import com.star.hermes.util.PwdUtil;
+import org.hibernate.internal.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 
@@ -22,5 +27,21 @@ public class ChatController extends BaseController {
 
     @Resource
     private ChatService chatService;
+
+    @RequestMapping(value = "/ask", method = RequestMethod.POST)
+    public TcRespDto login(String mail, String password) {
+        logger.info("login mail={}", mail);
+        if (StringHelper.isBlank(mail) || StringHelper.isBlank(password)) {
+            TcRespDto.fail(RespCode.INVALID_PARAM.getCode(), RespCode.INVALID_PARAM.getMsg());
+        }
+
+        String encryptPwd = PwdUtil.encrypt(password);
+
+
+
+
+
+        return TcRespDto.success("");
+    }
 
 }
